@@ -1,0 +1,19 @@
+{
+  "name": "terminal-portfolio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  },
+  "dependencies": {
+    "figlet": "^1.9.3",
+    "gsap": "^3.13.0",
+    "three": "^0.160.1"
+  }
+}

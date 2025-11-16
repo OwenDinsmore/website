@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Owen Dinsmore - Terminal-themed portfolio showcasing projects, experience, and skills">
+  <meta name="author" content="Owen Dinsmore">
+  <meta name="theme-color" content="#000000">
+
+  <!-- Preconnect to font provider -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Fira Code font -->
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <title>Owen Dinsmore | Terminal Portfolio</title>
+
+  <link rel="stylesheet" href="/src/styles/main.css">
+</head>
+<body>
+  <!-- Skip to content link for accessibility -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Landing Section -->
+  <section id="landing" class="section section--landing" aria-label="Welcome">
+    <!-- ASCII Art Banner -->
+    <h1 id="main-content" class="ascii-banner-wrapper">
+      <span class="visually-hidden">Owen Dinsmore</span>
+      <!-- ASCII art will be injected here by JavaScript -->
+    </h1>
+
+    <!-- Contact cards container (hidden by default) -->
+    <div class="contact-cards" id="contactCards" role="region" aria-label="Contact information" hidden>
+      <a href="https://linkedin.com/in/your-profile" class="contact-card" target="_blank" rel="noopener noreferrer">
+        <span class="contact-card__icon">in</span>
+        <span class="contact-card__label">LinkedIn</span>
+      </a>
+      <a href="https://github.com/your-username" class="contact-card" target="_blank" rel="noopener noreferrer">
+        <span class="contact-card__icon">gh</span>
+        <span class="contact-card__label">GitHub</span>
+      </a>
+      <a href="mailto:your.email@example.com" class="contact-card">
+        <span class="contact-card__icon">@</span>
+        <span class="contact-card__label">Email</span>
+      </a>
+    </div>
+
+    <!-- Contact Banner with Newton's Cradle -->
+    <div class="contact-banner-container">
+      <div class="contact-banner">
+        <span class="contact-banner__text">contact</span>
+      </div>
+      <canvas class="newtons-cradle-canvas" id="cradleCanvas" width="400" height="200"></canvas>
+    </div>
+
+    <!-- Terminal -->
+    <div class="terminal" role="complementary" aria-label="Terminal interface">
+      <div class="terminal__content">
+        <label for="terminalInput" class="terminal__prompt" aria-label="Terminal prompt">
+          <span class="prompt-symbol">&gt;</span>
+          <span class="prompt-text">scroll to continue</span>
+        </label>
+        <input
+          type="text"
+          id="terminalInput"
+          class="terminal__input"
+          placeholder="or type a command..."
+          aria-label="Terminal command input"
+          autocomplete="off"
+        >
+        <div class="terminal__output" id="terminalOutput" role="log" aria-live="polite"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Globe Section -->
+  <section id="globe" class="section section--globe" aria-label="Interactive globe">
+    <canvas id="globeCanvas" aria-hidden="true"></canvas>
+  </section>
+
+  <!-- Content Section (Education, Experience, Projects) -->
+  <section id="content" class="section section--content" aria-label="Professional information">
+    <div class="tabbed-card">
+      <!-- Tab Navigation -->
+      <div class="tab-nav">
+        <button class="tab-button active" data-tab="education">Education</button>
+        <button class="tab-button" data-tab="experience">Experience</button>
+        <button class="tab-button" data-tab="projects">Projects</button>
+      </div>
+
+      <!-- Tab Content -->
+      <div class="tab-content-wrapper">
+        <!-- Education Tab -->
+        <div class="tab-panel active" id="education" data-panel="education">
+          <div class="card-stack">
+          <article class="info-card" data-card>
+            <div class="card-header">
+              <h3 class="card-title">Degree/Institution 1</h3>
+              <button class="card-toggle" aria-expanded="false" aria-label="Expand details">
+                <span class="toggle-icon">+</span>
+              </button>
+            </div>
+            <div class="card-content" hidden>
+              <p>Details about your education...</p>
+            </div>
+          </article>
+
+          <article class="info-card" data-card>
+            <div class="card-header">
+              <h3 class="card-title">Degree/Institution 2</h3>
+              <button class="card-toggle" aria-expanded="false" aria-label="Expand details">
+                <span class="toggle-icon">+</span>
+              </button>
+            </div>
+            <div class="card-content" hidden>
+              <p>Details about your education...</p>
+            </div>
+          </article>
+          </div>
+        </div>
+
+        <!-- Experience Tab -->
+        <div class="tab-panel" id="experience" data-panel="experience">
+          <div class="card-stack">
+          <article class="info-card" data-card>
+            <div class="card-header">
+              <h3 class="card-title">Job Title 1 - Company</h3>
+              <button class="card-toggle" aria-expanded="false" aria-label="Expand details">
+                <span class="toggle-icon">+</span>
+              </button>
+            </div>
+            <div class="card-content" hidden>
+              <p>Details about your work experience...</p>
+            </div>
+          </article>
+
+          <article class="info-card" data-card>
+            <div class="card-header">
+              <h3 class="card-title">Job Title 2 - Company</h3>
+              <button class="card-toggle" aria-expanded="false" aria-label="Expand details">
+                <span class="toggle-icon">+</span>
+              </button>
+            </div>
+            <div class="card-content" hidden>
+              <p>Details about your work experience...</p>
+            </div>
+          </article>
+
+          <article class="info-card" data-card>
+            <div class="card-header">
+              <h3 class="card-title">Job Title 3 - Company</h3>
+              <button class="card-toggle" aria-expanded="false" aria-label="Expand details">
+                <span class="toggle-icon">+</span>
+              </button>
+            </div>
+            <div class="card-content" hidden>
+              <p>Details about your work experience...</p>
+            </div>
+          </article>
+          </div>
+        </div>
+
+        <!-- Projects Tab -->
+        <div class="tab-panel" id="projects" data-panel="projects">
+          <div class="card-stack">
+          <article class="info-card" data-card>
+            <div class="card-header">
+              <h3 class="card-title">Project 1</h3>
+              <button class="card-toggle" aria-expanded="false" aria-label="Expand details">
+                <span class="toggle-icon">+</span>
+              </button>
+            </div>
+            <div class="card-content" hidden>
+              <p>Details about your project...</p>
+            </div>
+          </article>
+
+          <article class="info-card" data-card>
+            <div class="card-header">
+              <h3 class="card-title">Project 2</h3>
+              <button class="card-toggle" aria-expanded="false" aria-label="Expand details">
+                <span class="toggle-icon">+</span>
+              </button>
+            </div>
+            <div class="card-content" hidden>
+              <p>Details about your project...</p>
+            </div>
+          </article>
+
+          <article class="info-card" data-card>
+            <div class="card-header">
+              <h3 class="card-title">Project 3</h3>
+              <button class="card-toggle" aria-expanded="false" aria-label="Expand details">
+                <span class="toggle-icon">+</span>
+              </button>
+            </div>
+            <div class="card-content" hidden>
+              <p>Details about your project...</p>
+            </div>
+          </article>
+
+          <article class="info-card" data-card>
+            <div class="card-header">
+              <h3 class="card-title">Project 4</h3>
+              <button class="card-toggle" aria-expanded="false" aria-label="Expand details">
+                <span class="toggle-icon">+</span>
+              </button>
+            </div>
+            <div class="card-content" hidden>
+              <p>Details about your project...</p>
+            </div>
+          </article>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Skills Section (Orbit Visualization) -->
+  <section id="skills" class="section section--skills" aria-label="Skills">
+    <h2 class="visually-hidden">Skills</h2>
+    <div class="orbit-container">
+      <svg class="orbit-visualization" aria-hidden="true">
+        <!-- SVG will be populated by JavaScript -->
+      </svg>
+      <div class="skills-list" role="list">
+        <!-- Accessible skill list for screen readers -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer" role="contentinfo">
+    <div class="footer-content">
+      <!-- Footer Terminal -->
+      <div class="terminal" role="complementary" aria-label="Footer terminal interface">
+        <div class="terminal__content">
+          <label for="footerTerminalInput" class="terminal__prompt" aria-label="Terminal prompt">
+            <span class="prompt-symbol">&gt;</span>
+            <span class="prompt-text">type a command...</span>
+          </label>
+          <input
+            type="text"
+            id="footerTerminalInput"
+            class="terminal__input"
+            placeholder="help, contacts, resume..."
+            aria-label="Footer terminal command input"
+            autocomplete="off"
+          >
+          <div class="terminal__output" id="footerTerminalOutput" role="log" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="footer-info">
+        <p>&copy; <span id="currentYear"></span> Owen Dinsmore. Built with Vanilla JS, Three.js, and GSAP.</p>
+        <button id="backToTop" class="back-to-top" aria-label="Back to top" hidden>
+          <span aria-hidden="true">↑</span>
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
