@@ -5,7 +5,6 @@
 
 import { Globe } from './globe.js';
 import { createASCIIBanner } from './asciiArt.js';
-import { NewtonsCradle } from './newtonsCradle.js';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { setupGlobeDiagnostics } from './globeTest.js';
@@ -48,11 +47,9 @@ class TerminalInterface {
     this.input = inputElement;
     this.output = outputElement;
     this.contactCards = document.getElementById('contactCards');
-    this.cradleCanvas = document.getElementById('cradleCanvas');
     this.commands = {
       help: this.showHelp.bind(this),
       contacts: this.showContacts.bind(this),
-      contact: this.showContact.bind(this),
       resume: this.showResume.bind(this),
       clear: this.clearOutput.bind(this),
     };
@@ -120,18 +117,10 @@ class TerminalInterface {
 
   showHelp() {
     this.addOutput('Available commands:', 'info');
-    this.addOutput('  contact  - Show interactive contact links', 'info');
     this.addOutput('  contacts - Show contact information', 'info');
     this.addOutput('  resume   - Download resume', 'info');
     this.addOutput('  clear    - Clear terminal output', 'info');
     this.addOutput('  help     - Show this help message', 'info');
-  }
-
-  showContact() {
-    if (this.cradleCanvas) {
-      this.cradleCanvas.classList.add('active');
-      this.addOutput('Interactive contact links displayed.', 'success');
-    }
   }
 
   showContacts() {
@@ -168,7 +157,7 @@ class CardManager {
     // Setup scroll-to-switch tabs
     this.setupScrollSwitching();
 
-    // Setup expandable cards
+    // Setup clickable cards for expansion
     this.setupCardExpansion();
 
     // Show first tab's cards
@@ -190,17 +179,15 @@ class CardManager {
     if (!tabbedCard) return;
 
     let scrollAccumulator = 0;
-    const scrollThreshold = 80; // Small scroll to switch tabs
+    const scrollThreshold = 80;
 
     const handleWheel = (e) => {
-      // Only handle if not scrolling within tab content
       const isScrollableContent = e.target.closest('.tab-content-wrapper');
       if (isScrollableContent) {
         const wrapper = isScrollableContent;
         const canScrollDown = wrapper.scrollTop < wrapper.scrollHeight - wrapper.clientHeight;
         const canScrollUp = wrapper.scrollTop > 0;
 
-        // Allow natural scrolling within content
         if ((e.deltaY > 0 && canScrollDown) || (e.deltaY < 0 && canScrollUp)) {
           return;
         }
@@ -211,16 +198,14 @@ class CardManager {
         return;
       }
 
-      // Check if we're at boundaries and should allow page scroll
       const isScrollingDown = e.deltaY > 0;
       const isScrollingUp = e.deltaY < 0;
       const isAtLastTab = this.currentTab === this.tabPanels.length - 1;
       const isAtFirstTab = this.currentTab === 0;
 
-      // Allow natural page scroll at boundaries
       if ((isScrollingDown && isAtLastTab) || (isScrollingUp && isAtFirstTab)) {
         scrollAccumulator = 0;
-        return; // Don't prevent default, allow page scroll
+        return;
       }
 
       scrollAccumulator += e.deltaY;
@@ -279,31 +264,158 @@ class CardManager {
 
   setupCardExpansion() {
     this.cards.forEach(card => {
-      const toggle = card.querySelector('.card-toggle');
       const content = card.querySelector('.card-content');
+      if (!content) return;
 
-      if (!toggle || !content) return;
+      // Make entire card clickable to toggle
+      card.addEventListener('click', (e) => {
+        if (e.target.tagName === 'A') return;
 
-      toggle.addEventListener('click', () => {
-        const isExpanded = toggle.getAttribute('aria-expanded') === 'true';
+        const isExpanded = card.classList.contains('expanded');
 
-        // Close all other cards
-        this.cards.forEach(otherCard => {
-          if (otherCard !== card) {
-            const otherToggle = otherCard.querySelector('.card-toggle');
-            const otherContent = otherCard.querySelector('.card-content');
-            if (otherToggle && otherContent) {
-              otherToggle.setAttribute('aria-expanded', 'false');
-              otherContent.hidden = true;
-            }
-          }
-        });
-
-        // Toggle current card
-        toggle.setAttribute('aria-expanded', !isExpanded);
-        content.hidden = isExpanded;
+        if (isExpanded) {
+          card.classList.remove('expanded');
+          content.hidden = true;
+        } else {
+          card.classList.add('expanded');
+          content.hidden = false;
+        }
       });
     });
+  }
+}
+
+// ===================================
+// Diagonal Cards Animation
+// ===================================
+
+class DiagonalCards {
+  constructor() {
+    this.container = document.querySelector('.diagonal-cards-container');
+    this.section = document.querySelector('.section--diagonal-cards');
+    this.cards = document.querySelectorAll('.diagonal-card');
+
+    if (!this.container || this.cards.length === 0) return;
+
+    this.init();
+  }
+
+  init() {
+    if (prefersReducedMotion()) {
+      // Show cards in final position if reduced motion
+      this.cards.forEach((card, index) => {
+        const xPos = (index - 1) * 450 + window.innerWidth / 2 - 200;
+        gsap.set(card, {
+          x: xPos,
+          y: window.innerHeight / 2 - 250
+        });
+      });
+      return;
+    }
+
+    this.setupScrollAnimations();
+  }
+
+  setupScrollAnimations() {
+    const section = this.section;
+    const cards = this.cards;
+    const container = this.container;
+
+    const vw = window.innerWidth;
+    const vh = window.innerHeight;
+
+    // Calculate stripe dimensions - they need to be large enough to cover
+    // the screen when rotated at -45 degrees
+    // When rotated 45°, we need extra size to cover corners
+    const diagonal = Math.sqrt(vw * vw + vh * vh);
+    const stripeWidth = vw / 2.5; // Each stripe covers ~40% width with overlap
+    const stripeHeight = diagonal * 1.5; // Tall enough to cover when rotated
+
+    // Horizontal positions for each stripe (left, center, right)
+    const stripePositions = [
+      vw * 0.15,  // Left stripe
+      vw * 0.5,   // Center stripe
+      vw * 0.85   // Right stripe
+    ];
+
+    // Set card dimensions via CSS
+    cards.forEach((card, index) => {
+      card.style.width = `${stripeWidth}px`;
+      card.style.height = `${stripeHeight}px`;
+    });
+
+    // Start position: below and off screen
+    const getStartY = () => vh + stripeHeight;
+
+    // Center position: covering the viewport
+    const getCenterY = () => vh / 2;
+
+    // Exit position: above and off screen
+    const getExitY = () => -stripeHeight;
+
+    // Set initial positions (below screen, rotated, at their X positions)
+    cards.forEach((card, index) => {
+      gsap.set(card, {
+        x: stripePositions[index] - stripeWidth / 2,
+        y: getStartY(),
+        rotation: -45,
+        transformOrigin: 'center center'
+      });
+    });
+
+    // Visibility toggle
+    ScrollTrigger.create({
+      trigger: section,
+      start: 'top bottom',
+      end: 'bottom top',
+      onEnter: () => { container.style.visibility = 'visible'; },
+      onLeave: () => { container.style.visibility = 'hidden'; },
+      onEnterBack: () => { container.style.visibility = 'visible'; },
+      onLeaveBack: () => { container.style.visibility = 'hidden'; }
+    });
+
+    // Main animation timeline
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.5
+      }
+    });
+
+    // ENTRY PHASE: Stripes slide in one at a time (left, middle, right)
+    // Each stripe fully enters before the next begins
+    const entryDuration = 0.13;
+
+    cards.forEach((card, index) => {
+      const startTime = index * entryDuration;
+
+      tl.to(card, {
+        y: getCenterY(),
+        duration: entryDuration,
+        ease: 'none'
+      }, startTime);
+    });
+
+    // PAUSE PHASE (0.39 - 0.61): All stripes visible, covering screen
+    // No animation - they hold position
+
+    // EXIT PHASE: Stripes slide out one at a time (left, middle, right)
+    const exitDuration = 0.13;
+    const exitStart = 0.61;
+
+    cards.forEach((card, index) => {
+      const exitStartTime = exitStart + (index * exitDuration);
+
+      tl.to(card, {
+        y: getExitY(),
+        duration: exitDuration,
+        ease: 'none'
+      }, exitStartTime);
+    });
+
+    container.style.visibility = 'hidden';
   }
 }
 
@@ -336,6 +448,179 @@ class BackToTop {
         behavior: 'smooth'
       });
     });
+  }
+}
+
+// ===================================
+// Skills Grid Stacking Animation
+// ===================================
+
+class SkillsGridAnimation {
+  constructor() {
+    this.section = document.querySelector('.section--skills-grid');
+    this.container = document.querySelector('.skills-grid-container');
+
+    if (!this.section || !this.container) return;
+
+    // Get all skill boxes grouped by type
+    this.smallBoxes = Array.from(document.querySelectorAll('.skill-box--small'));
+    this.mediumBoxes = Array.from(document.querySelectorAll('.skill-box--medium'));
+    this.largeBox = document.querySelector('.skill-box--large');
+
+    this.init();
+  }
+
+  init() {
+    if (prefersReducedMotion()) {
+      // Show all boxes immediately if reduced motion
+      this.showAllBoxes();
+      return;
+    }
+
+    this.setupZipperAnimation();
+  }
+
+  showAllBoxes() {
+    const allBoxes = [...this.smallBoxes, ...this.mediumBoxes];
+    if (this.largeBox) allBoxes.push(this.largeBox);
+
+    allBoxes.forEach(box => {
+      box.style.opacity = '1';
+      box.style.transform = 'translateX(0)';
+    });
+  }
+
+  setupZipperAnimation() {
+    const vw = window.innerWidth;
+
+    // Set initial state - boxes hidden off to sides (alternating left/right)
+    // Row 1: boxes 0,1,2,3 - alternate from left and right
+    this.smallBoxes.forEach((box, index) => {
+      const fromLeft = index % 2 === 0;
+      gsap.set(box, {
+        opacity: 0,
+        x: fromLeft ? -vw : vw
+      });
+    });
+
+    // Medium boxes - alternate sides
+    this.mediumBoxes.forEach((box, index) => {
+      const fromLeft = index % 2 === 0;
+      gsap.set(box, {
+        opacity: 0,
+        x: fromLeft ? -vw : vw
+      });
+    });
+
+    // Large box from bottom
+    if (this.largeBox) {
+      gsap.set(this.largeBox, {
+        opacity: 0,
+        y: 200
+      });
+    }
+
+    // Create timeline for zipper animation - pinned while animating
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: this.section,
+        start: 'top top',
+        end: '+=2000',
+        pin: true,
+        scrub: 1,
+        anticipatePin: 1
+      }
+    });
+
+    // Zipper in the small boxes - top row first, alternating left/right
+    // Row 1: indices 0, 1, 2, 3
+    const row1 = this.smallBoxes.slice(0, 4);
+    row1.forEach((box, i) => {
+      tl.to(box, {
+        opacity: 1,
+        x: 0,
+        duration: 0.15,
+        ease: 'power3.out'
+      }, i * 0.05);
+    });
+
+    // Row 2: indices 4, 5, 6, 7
+    const row2 = this.smallBoxes.slice(4, 8);
+    row2.forEach((box, i) => {
+      tl.to(box, {
+        opacity: 1,
+        x: 0,
+        duration: 0.15,
+        ease: 'power3.out'
+      }, 0.25 + i * 0.05);
+    });
+
+    // Medium boxes zipper in
+    this.mediumBoxes.forEach((box, i) => {
+      tl.to(box, {
+        opacity: 1,
+        x: 0,
+        duration: 0.18,
+        ease: 'power3.out'
+      }, 0.5 + i * 0.06);
+    });
+
+    // Large box slides up from bottom
+    if (this.largeBox) {
+      tl.to(this.largeBox, {
+        opacity: 1,
+        y: 0,
+        duration: 0.2,
+        ease: 'power2.out'
+      }, 0.8);
+    }
+  }
+}
+
+// ===================================
+// Backgammon Game (Lazy Loaded)
+// ===================================
+
+class BackgammonLoader {
+  constructor() {
+    this.container = document.querySelector('.backgammon-container');
+    this.playBtn = document.querySelector('.backgammon-play-btn');
+    this.game = null;
+    this.loaded = false;
+
+    if (!this.container || !this.playBtn) return;
+
+    this.init();
+  }
+
+  init() {
+    // Lazy load the game when play button is clicked
+    this.playBtn.addEventListener('click', () => this.loadAndStartGame());
+  }
+
+  async loadAndStartGame() {
+    if (!this.loaded) {
+      try {
+        this.playBtn.textContent = '[ ... ]';
+        this.playBtn.disabled = true;
+
+        // Dynamic import - Vite will code-split this automatically
+        const { Backgammon } = await import('./games/backgammon.js');
+
+        this.game = new Backgammon(this.container);
+        this.loaded = true;
+
+        console.log('Backgammon game loaded');
+      } catch (err) {
+        console.error('Failed to load backgammon:', err);
+        this.playBtn.textContent = '[ ERROR ]';
+        this.playBtn.disabled = false;
+        return;
+      }
+    } else if (this.game) {
+      // Game already loaded, just start/reset
+      this.game.startGame();
+    }
   }
 }
 
@@ -380,24 +665,6 @@ async function init() {
     }
   }
 
-  // Initialize Newton's Cradle
-  const cradleCanvas = document.getElementById('cradleCanvas');
-  if (cradleCanvas) {
-    try {
-      const links = [
-        { name: 'Left Ball', url: null, icon: '', isDraggable: true },
-        { name: 'GitHub', url: 'https://github.com/your-username', icon: 'gh', isDraggable: false },
-        { name: 'Email', url: 'mailto:your.email@example.com', icon: '@', isDraggable: false },
-        { name: 'LinkedIn', url: 'https://linkedin.com/in/your-profile', icon: 'in', isDraggable: false },
-        { name: 'Right Ball', url: null, icon: '', isDraggable: true }
-      ];
-      new NewtonsCradle(cradleCanvas, links);
-      console.log('Newton\'s Cradle initialized successfully');
-    } catch (err) {
-      console.error('Failed to initialize Newton\'s Cradle:', err);
-    }
-  }
-
   // Initialize terminal interfaces (landing page and footer)
   const terminals = document.querySelectorAll('.terminal');
   terminals.forEach((terminal, index) => {
@@ -418,6 +685,15 @@ async function init() {
   // Initialize cards with animations
   new CardManager();
 
+  // Initialize diagonal cards with scroll animations
+  new DiagonalCards();
+
+  // Initialize skills grid stacking animation
+  new SkillsGridAnimation();
+
+  // Initialize backgammon game (lazy loaded)
+  new BackgammonLoader();
+
   // Initialize back to top button
   new BackToTop();
 
@@ -435,4 +711,4 @@ if (document.readyState === 'loading') {
 }
 
 // Export for potential module usage
-export { TerminalInterface, CardManager, BackToTop };
+export { TerminalInterface, CardManager, DiagonalCards, SkillsGridAnimation, BackgammonLoader, BackToTop };

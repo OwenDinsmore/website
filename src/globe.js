@@ -290,6 +290,30 @@ export class Globe {
     const initialRotationY = -0.2; // US/Atlantic Ocean view (adjusted east)
     const initialRotationX = 0.7; // Tilt to show northern hemisphere
 
+    // Visibility control - only show globe in its section
+    ScrollTrigger.create({
+      trigger: this.section,
+      start: 'top bottom',
+      end: 'bottom top',
+      onEnter: () => {
+        this.canvas.style.opacity = '1';
+        this.canvas.style.pointerEvents = 'auto';
+      },
+      onLeave: () => {
+        this.canvas.style.opacity = '0';
+        this.canvas.style.pointerEvents = 'none';
+      },
+      onEnterBack: () => {
+        this.canvas.style.opacity = '1';
+        this.canvas.style.pointerEvents = 'auto';
+      },
+      onLeaveBack: () => {
+        this.canvas.style.opacity = '0';
+        this.canvas.style.pointerEvents = 'none';
+      }
+    });
+
+    // Rotation animation
     ScrollTrigger.create({
       trigger: this.section,
       start: 'top bottom',
@@ -311,6 +335,23 @@ export class Globe {
         this.globe.rotation.x = initialRotationX;
       }
     });
+
+    // Footer globe visibility - show when scrolling into footer-globe section
+    const footerGlobeSection = document.getElementById('footer-globe');
+    if (footerGlobeSection) {
+      ScrollTrigger.create({
+        trigger: footerGlobeSection,
+        start: 'top bottom',
+        end: 'bottom bottom',
+        onEnter: () => {
+          this.canvas.style.opacity = '1';
+          this.canvas.style.pointerEvents = 'none';
+        },
+        onLeaveBack: () => {
+          this.canvas.style.opacity = '0';
+        }
+      });
+    }
   }
 
   startRendering() {

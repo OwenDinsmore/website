@@ -46,12 +46,17 @@
       </a>
     </div>
 
-    <!-- Contact Banner with Newton's Cradle -->
-    <div class="contact-banner-container">
-      <div class="contact-banner">
-        <span class="contact-banner__text">contact</span>
-      </div>
-      <canvas class="newtons-cradle-canvas" id="cradleCanvas" width="400" height="200"></canvas>
+    <!-- Social Media Icons -->
+    <div class="social-icons" role="navigation" aria-label="Social media links">
+      <a href="https://github.com/your-username" class="social-icon" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+        <span class="social-icon__text">gh</span>
+      </a>
+      <a href="https://linkedin.com/in/your-profile" class="social-icon" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+        <span class="social-icon__text">in</span>
+      </a>
+      <a href="mailto:your.email@example.com" class="social-icon" aria-label="Email">
+        <span class="social-icon__text">✉</span>
+      </a>
     </div>
 
     <!-- Terminal -->
@@ -97,9 +102,6 @@
           <article class="info-card" data-card>
             <div class="card-header">
               <h3 class="card-title">Degree/Institution 1</h3>
-              <button class="card-toggle" aria-expanded="false" aria-label="Expand details">
-                <span class="toggle-icon">+</span>
-              </button>
             </div>
             <div class="card-content" hidden>
               <p>Details about your education...</p>
@@ -109,9 +111,6 @@
           <article class="info-card" data-card>
             <div class="card-header">
               <h3 class="card-title">Degree/Institution 2</h3>
-              <button class="card-toggle" aria-expanded="false" aria-label="Expand details">
-                <span class="toggle-icon">+</span>
-              </button>
             </div>
             <div class="card-content" hidden>
               <p>Details about your education...</p>
@@ -126,9 +125,6 @@
           <article class="info-card" data-card>
             <div class="card-header">
               <h3 class="card-title">Job Title 1 - Company</h3>
-              <button class="card-toggle" aria-expanded="false" aria-label="Expand details">
-                <span class="toggle-icon">+</span>
-              </button>
             </div>
             <div class="card-content" hidden>
               <p>Details about your work experience...</p>
@@ -138,9 +134,6 @@
           <article class="info-card" data-card>
             <div class="card-header">
               <h3 class="card-title">Job Title 2 - Company</h3>
-              <button class="card-toggle" aria-expanded="false" aria-label="Expand details">
-                <span class="toggle-icon">+</span>
-              </button>
             </div>
             <div class="card-content" hidden>
               <p>Details about your work experience...</p>
@@ -150,9 +143,6 @@
           <article class="info-card" data-card>
             <div class="card-header">
               <h3 class="card-title">Job Title 3 - Company</h3>
-              <button class="card-toggle" aria-expanded="false" aria-label="Expand details">
-                <span class="toggle-icon">+</span>
-              </button>
             </div>
             <div class="card-content" hidden>
               <p>Details about your work experience...</p>
@@ -167,9 +157,6 @@
           <article class="info-card" data-card>
             <div class="card-header">
               <h3 class="card-title">Project 1</h3>
-              <button class="card-toggle" aria-expanded="false" aria-label="Expand details">
-                <span class="toggle-icon">+</span>
-              </button>
             </div>
             <div class="card-content" hidden>
               <p>Details about your project...</p>
@@ -179,9 +166,6 @@
           <article class="info-card" data-card>
             <div class="card-header">
               <h3 class="card-title">Project 2</h3>
-              <button class="card-toggle" aria-expanded="false" aria-label="Expand details">
-                <span class="toggle-icon">+</span>
-              </button>
             </div>
             <div class="card-content" hidden>
               <p>Details about your project...</p>
@@ -191,9 +175,6 @@
           <article class="info-card" data-card>
             <div class="card-header">
               <h3 class="card-title">Project 3</h3>
-              <button class="card-toggle" aria-expanded="false" aria-label="Expand details">
-                <span class="toggle-icon">+</span>
-              </button>
             </div>
             <div class="card-content" hidden>
               <p>Details about your project...</p>
@@ -203,9 +184,6 @@
           <article class="info-card" data-card>
             <div class="card-header">
               <h3 class="card-title">Project 4</h3>
-              <button class="card-toggle" aria-expanded="false" aria-label="Expand details">
-                <span class="toggle-icon">+</span>
-              </button>
             </div>
             <div class="card-content" hidden>
               <p>Details about your project...</p>
@@ -217,15 +195,157 @@
     </div>
   </section>
 
-  <!-- Skills Section (Orbit Visualization) -->
-  <section id="skills" class="section section--skills" aria-label="Skills">
-    <h2 class="visually-hidden">Skills</h2>
-    <div class="orbit-container">
-      <svg class="orbit-visualization" aria-hidden="true">
-        <!-- SVG will be populated by JavaScript -->
-      </svg>
-      <div class="skills-list" role="list">
-        <!-- Accessible skill list for screen readers -->
+  <!-- Skills & Interests Grid Section -->
+  <section id="skills-grid" class="section section--skills-grid" aria-label="Skills and Interests">
+    <h2 class="visually-hidden">Skills & Interests</h2>
+    <div class="skills-grid-container">
+      <!-- 8 Small Skill Boxes -->
+      <div class="skill-box skill-box--small" data-box="skill">
+        <span class="skill-box__icon">{ }</span>
+        <span class="skill-box__label">JavaScript</span>
+      </div>
+      <div class="skill-box skill-box--small" data-box="skill">
+        <span class="skill-box__icon">Py</span>
+        <span class="skill-box__label">Python</span>
+      </div>
+      <div class="skill-box skill-box--small" data-box="skill">
+        <span class="skill-box__icon">⚛</span>
+        <span class="skill-box__label">React</span>
+      </div>
+      <div class="skill-box skill-box--small" data-box="skill">
+        <span class="skill-box__icon">▲</span>
+        <span class="skill-box__label">Three.js</span>
+      </div>
+      <div class="skill-box skill-box--small" data-box="skill">
+        <span class="skill-box__icon">◊</span>
+        <span class="skill-box__label">Node.js</span>
+      </div>
+      <div class="skill-box skill-box--small" data-box="skill">
+        <span class="skill-box__icon">§</span>
+        <span class="skill-box__label">TypeScript</span>
+      </div>
+      <div class="skill-box skill-box--small" data-box="skill">
+        <span class="skill-box__icon">⌘</span>
+        <span class="skill-box__label">Git</span>
+      </div>
+      <div class="skill-box skill-box--small" data-box="skill">
+        <span class="skill-box__icon">☁</span>
+        <span class="skill-box__label">AWS</span>
+      </div>
+
+      <!-- 4 Medium Boxes (Interests & Other) -->
+      <div class="skill-box skill-box--medium" data-box="interest">
+        <span class="skill-box__title">3D Graphics</span>
+        <span class="skill-box__desc">WebGL, Shaders, Interactive visualizations</span>
+      </div>
+      <div class="skill-box skill-box--medium" data-box="interest">
+        <span class="skill-box__title">Creative Coding</span>
+        <span class="skill-box__desc">Generative art, animations, experiments</span>
+      </div>
+      <div class="skill-box skill-box--medium" data-box="other">
+        <span class="skill-box__title">Open Source</span>
+        <span class="skill-box__desc">Contributing to community projects</span>
+      </div>
+      <div class="skill-box skill-box--medium" data-box="other">
+        <span class="skill-box__title">Problem Solving</span>
+        <span class="skill-box__desc">Algorithms, system design, optimization</span>
+      </div>
+
+      <!-- 1 Large Personal Interests Box -->
+      <div class="skill-box skill-box--large" data-box="personal">
+        <span class="skill-box__title">Personal Interests</span>
+        <span class="skill-box__desc">Beyond the code - music, gaming, photography, travel, and exploring new technologies that push creative boundaries.</span>
+        <button class="skill-box__btn">Learn More</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Backgammon Board Section -->
+  <section id="backgammon" class="section section--backgammon" aria-label="Backgammon minigame">
+    <div class="backgammon-container">
+      <!-- Play Button - top right -->
+      <button class="backgammon-play-btn">[ PLAY ]</button>
+
+      <!-- Game Status Line -->
+      <div class="backgammon-status">> awaiting player...</div>
+
+      <div class="backgammon-layout">
+        <!-- Dice - Left side -->
+        <div class="backgammon-dice-area">
+          <div class="backgammon-die" id="die1" data-value="1">
+            <span class="die-dot"></span>
+            <span class="die-dot"></span>
+            <span class="die-dot"></span>
+            <span class="die-dot"></span>
+            <span class="die-dot"></span>
+            <span class="die-dot"></span>
+            <span class="die-dot"></span>
+            <span class="die-dot"></span>
+            <span class="die-dot"></span>
+          </div>
+          <div class="backgammon-die" id="die2" data-value="1">
+            <span class="die-dot"></span>
+            <span class="die-dot"></span>
+            <span class="die-dot"></span>
+            <span class="die-dot"></span>
+            <span class="die-dot"></span>
+            <span class="die-dot"></span>
+            <span class="die-dot"></span>
+            <span class="die-dot"></span>
+            <span class="die-dot"></span>
+          </div>
+        </div>
+
+        <!-- Main Board -->
+        <div class="backgammon-board">
+          <!-- Top Row - Points 13-24 (Green's home board is 19-24) -->
+          <div class="backgammon-half backgammon-half--top">
+            <div class="backgammon-point" data-point="13"><span class="point-num">13</span></div>
+            <div class="backgammon-point" data-point="14"><span class="point-num">14</span></div>
+            <div class="backgammon-point" data-point="15"><span class="point-num">15</span></div>
+            <div class="backgammon-point" data-point="16"><span class="point-num">16</span></div>
+            <div class="backgammon-point" data-point="17"><span class="point-num">17</span></div>
+            <div class="backgammon-point" data-point="18"><span class="point-num">18</span></div>
+            <div class="backgammon-bar-center" id="barGreen"></div>
+            <div class="backgammon-point" data-point="19"><span class="point-num">19</span></div>
+            <div class="backgammon-point" data-point="20"><span class="point-num">20</span></div>
+            <div class="backgammon-point" data-point="21"><span class="point-num">21</span></div>
+            <div class="backgammon-point" data-point="22"><span class="point-num">22</span></div>
+            <div class="backgammon-point" data-point="23"><span class="point-num">23</span></div>
+            <div class="backgammon-point" data-point="24"><span class="point-num">24</span></div>
+          </div>
+
+          <!-- Bottom Row - Points 12-1 (White's home board is 1-6) -->
+          <div class="backgammon-half backgammon-half--bottom">
+            <div class="backgammon-point" data-point="12"><span class="point-num">12</span></div>
+            <div class="backgammon-point" data-point="11"><span class="point-num">11</span></div>
+            <div class="backgammon-point" data-point="10"><span class="point-num">10</span></div>
+            <div class="backgammon-point" data-point="9"><span class="point-num">9</span></div>
+            <div class="backgammon-point" data-point="8"><span class="point-num">8</span></div>
+            <div class="backgammon-point" data-point="7"><span class="point-num">7</span></div>
+            <div class="backgammon-bar-center" id="barWhite"></div>
+            <div class="backgammon-point" data-point="6"><span class="point-num">6</span></div>
+            <div class="backgammon-point" data-point="5"><span class="point-num">5</span></div>
+            <div class="backgammon-point" data-point="4"><span class="point-num">4</span></div>
+            <div class="backgammon-point" data-point="3"><span class="point-num">3</span></div>
+            <div class="backgammon-point" data-point="2"><span class="point-num">2</span></div>
+            <div class="backgammon-point" data-point="1"><span class="point-num">1</span></div>
+          </div>
+        </div>
+
+        <!-- Right side: Both homes (bear-off trays) -->
+        <div class="backgammon-homes">
+          <!-- White bears off here (from points 1-6) -->
+          <div class="backgammon-home" id="homeWhite">
+            <div class="backgammon-home__label">WHITE</div>
+            <div class="backgammon-home__pieces"></div>
+          </div>
+          <!-- Green bears off here (from points 19-24) -->
+          <div class="backgammon-home" id="homeGreen">
+            <div class="backgammon-home__label">GREEN</div>
+            <div class="backgammon-home__pieces"></div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -260,6 +380,9 @@
       </div>
     </div>
   </footer>
+
+  <!-- Footer Globe Section - reveals globe when scrolled to very bottom -->
+  <section id="footer-globe" class="section section--footer-globe" aria-hidden="true"></section>
 
   <script type="module" src="/src/main.js"></script>
 </body>
